@@ -1,4 +1,4 @@
-gt-cs6250
+pu-cos461
 =========
 
 Project Code for Computer Networking
