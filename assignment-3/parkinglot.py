@@ -94,34 +94,23 @@ class ParkingLotTopo(Topo):
 
         # The following template code creates a parking lot topology
         # for N = 1
-        # TODO: Replace the template code to create a parking lot topology for any arbitrary N (>= 1)
-        # Begin: Template code
         s1 = self.addSwitch('s1')
         h1 = self.addHost('h1', **hconfig)
 
         # Wire up receiver
-        self.addLink(receiver, s1,
-                      port1=0, port2=uplink, **lconfig)
+        self.addLink(receiver, s1, port1=0, port2=uplink, **lconfig)
 
         # Wire up clients:
-        self.addLink(h1, s1,
-                      port1=0, port2=hostlink, **lconfig)
+        self.addLink(h1, s1, port1=0, port2=hostlink, **lconfig)
 
-        # Uncomment the next 8 lines to create a N = 3 parking lot topology
-        #s2 = self.addSwitch('s2')
-        #h2 = self.addHost('h2', **hconfig)
-        #self.addLink(s1, s2,
-        #              port1=downlink, port2=uplink, **lconfig)
-        #self.addLink(h2, s2,
-        #              port1=0, port2=hostlink, **lconfig)
-        #s3 = self.addSwitch('s3')
-        #h3 = self.addHost('h3', **hconfig)
-        #self.addLink(s2, s3,
-        #              port1=downlink, port2=uplink, **lconfig)
-        #self.addLink(h3, s3,
-        #              port1=0, port2=hostlink, **lconfig)
-
-        # End: Template code
+        # for N > 1
+        prev_s = s1
+        for i in range(2, n+1):
+            s = self.addSwitch('s'+str(i))
+            h = self.addHost('h'+str(i), **hconfig)
+            self.addLink(prev_s, s, port1=downlink, port2=uplink, **lconfig)
+            self.addLink(h, s, port1=0, port2=hostlink, **lconfig)
+            prev_s = s
 
 def waitListening(client, server, port):
     "Wait until server is listening on port"
@@ -177,6 +166,16 @@ def run_parkinglot_expt(net, n):
     # Hint: waitOutput waits for the command to finish allowing you to wait on a particular process on the host
     # iperf command to start flow: 'iperf -c %s -p %s -t %d -i 1 -yc > %s/iperf_%s.txt' % (recvr.IP(), 5001, seconds, args.dir, node_name)
     # Hint (not important): You may use progress(t) to track your experiment progress
+
+    for i in range(1, n+1):
+        h = 'h'+str(i)
+        sender = net.getNodeByName(h)
+        sender.sendCmd('iperf -c %s -p %s -t %d -i 1 -yc > %s/iperf_%s.txt' % (recvr.IP(), 5001, seconds, args.dir, h))
+
+    for i in range(1, n+1):
+        h = 'h'+str(i)
+        sender = net.getNodeByName(h)
+        sender.waitOutput()
 
     recvr.cmd('kill %iperf')
 
