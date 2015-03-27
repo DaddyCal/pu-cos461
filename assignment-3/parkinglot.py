@@ -115,13 +115,13 @@ class ParkingLotTopo(Topo):
         # Wire up clients:
         self.addLink(h1, s1, port1=0, port2=hostlink, **lconfig)
 
-        prev_s = s1
-        for i in range(2, n+1):
-            s = self.addSwitch('s'+str(i))
-            h = self.addHost('h'+str(i), **hconfig)
-            self.addLink(prev_s, s, port1=downlink, port2=uplink, **lconfig)
-            self.addLink(h, s, port1=0, port2=hostlink, **lconfig)
-            prev_s = s
+        # prev_s = s1
+        # for i in range(2, n+1):
+        #     s = self.addSwitch('s'+str(i))
+        #     h = self.addHost('h'+str(i), **hconfig)
+        #     self.addLink(prev_s, s, port1=downlink, port2=uplink, **lconfig)
+        #     self.addLink(h, s, port1=0, port2=hostlink, **lconfig)
+        #     prev_s = s
 
 def waitListening(client, server, port):
     "Wait until server is listening on port"
@@ -178,15 +178,15 @@ def run_parkinglot_expt(net, n):
     # iperf command to start flow: 'iperf -c %s -p %s -t %d -i 1 -yc > %s/iperf_%s.txt' % (recvr.IP(), 5001, seconds, args.dir, node_name)
     # Hint (not important): You may use progress(t) to track your experiment progress
 
-    for i in range(1, n+1):
-        h = 'h'+str(i)
-        sender = net.getNodeByName(h)
-        sender.sendCmd('iperf -c %s -p %s -t %d -i 1 -yc > %s/iperf_%s.txt' % (recvr.IP(), 5001, seconds, args.dir, h))
-
-    for i in range(1, n+1):
-        h = 'h'+str(i)
-        sender = net.getNodeByName(h)
-        sender.waitOutput()
+    # for i in range(1, n+1):
+    #     h = 'h'+str(i)
+    #     sender = net.getNodeByName(h)
+    #     sender.sendCmd('iperf -c %s -p %s -t %d -i 1 -yc > %s/iperf_%s.txt' % (recvr.IP(), 5001, seconds, args.dir, h))
+    #
+    # for i in range(1, n+1):
+    #     h = 'h'+str(i)
+    #     sender = net.getNodeByName(h)
+    #     sender.waitOutput()
 
     recvr.cmd('kill %iperf')
 
