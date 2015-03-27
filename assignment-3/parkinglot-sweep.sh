@@ -31,7 +31,7 @@ for n in 1 2 3 4 5; do
     dir=$rootdir/n$n
     python parkinglot.py --bw $bw \
         --dir $dir \
-        --maxq 20 \
+        --maxq 30 \
         --delay 1 \
         -t 30 \
         -n $n
