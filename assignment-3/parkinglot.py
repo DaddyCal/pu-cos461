@@ -47,6 +47,18 @@ parser.add_argument('-n',
                     "Must be >= 1"),
                     required=True)
 
+parser.add_argument('--delay',
+                    dest="delay",
+                    type=float,
+                    help="Delay in milliseconds of host links",
+                    default=1)
+
+parser.add_argument('--maxq',
+                    dest="maxq",
+                    action="store",
+                    help="Max buffer size of network interface in packets",
+                    default=200)
+
 parser.add_argument('--cli', '-c',
                     action='store_true',
                     help='Run CLI for topology debugging purposes')
@@ -199,8 +211,8 @@ def main():
     topo = ParkingLotTopo(n=args.n)
 
     host = custom(CPULimitedHost, cpu=.15)  # 15% of system bandwidth
-    link = custom(TCLink, bw=args.bw, delay='1ms',
-                  max_queue_size=200)
+    link = custom(TCLink, bw=args.bw, delay=args.delay,
+                  max_queue_size=args.maxq)
 
     net = Mininet(topo=topo, host=host, link=link)
 
