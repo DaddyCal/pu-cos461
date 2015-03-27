@@ -31,6 +31,8 @@ for n in 1 2 3 4 5; do
     dir=$rootdir/n$n
     python parkinglot.py --bw $bw \
         --dir $dir \
+        --maxq 20 \
+        --delay 10 \
         -t 30 \
         -n $n
     python util/plot_rate.py --rx \
