@@ -32,7 +32,7 @@ for n in 1 2 3 4 5; do
     python parkinglot.py --bw $bw \
         --dir $dir \
         --maxq 20 \
-        --delay 10 \
+        --delay 1 \
         -t 30 \
         -n $n
     python util/plot_rate.py --rx \
