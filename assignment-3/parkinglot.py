@@ -55,7 +55,7 @@ parser.add_argument('--delay',
 
 parser.add_argument('--maxq',
                     dest="maxq",
-                    action="store",
+                    type=float,
                     help="Max buffer size of network interface in packets",
                     default=200)
 
